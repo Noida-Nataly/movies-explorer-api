@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 
-const filmSchema = new mongoose.Schema({
+const movieSchema = new mongoose.Schema({
   country: {
     type: String,
     required: true,
     minlength: 2,
     maxlength: 50,
   },
-  direction: {
+  director: {
     type: String,
     required: true,
     minlength: 2,
@@ -66,7 +66,7 @@ const filmSchema = new mongoose.Schema({
   nameRU: {
     type: String,
     required: true,
-  }
+  },
   nameEN: {
     type: String,
     required: true,
@@ -77,4 +77,4 @@ const filmSchema = new mongoose.Schema({
   // },
 });
 
-module.exports = mongoose.model('movie', filmSchema);
+module.exports = mongoose.model('movie', movieSchema);

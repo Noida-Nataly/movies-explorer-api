@@ -1,9 +1,8 @@
 const { celebrate, Joi } = require('celebrate');
 const router = require('express').Router();
 const userController = require('../controllers/users');
-//const { regex } = require('../utils/constants');
 const authMiddleware = require('../middlewares/auth');
-const filmRouter = require('./movies');
+const movieRouter = require('./movies');
 const userRouter = require('./users');
 const NotFoundError = require('../errors/not-found-err');
 
@@ -43,7 +42,7 @@ router.post(
       password: Joi.string().required().min(3),
     }),
   }),
-  userController.login,
+  userController.login
 );
 router.post('/signup', celebrate({
   body: Joi.object().keys({

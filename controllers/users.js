@@ -3,10 +3,10 @@ const jwt = require('jsonwebtoken');
 
 const { JWT_SECRET, NODE_ENV } = require('../utils/constants');
 const User = require('../models/user');
-// const NotAuthorizedError = require('../errors/not-auth-err');
-// const NotUniqueDataError = require('../errors/not-unique-data-err');
-// const InvalidDataError = require('../errors/invalid-data-err');
-// const NotFoundError = require('../errors/not-found-err');
+const NotAuthError = require('../errors/not-auth-err');
+const NotUniqueDataError = require('../errors/not-unique-data-err');
+const InvalidDataError = require('../errors/invalid-data-err');
+const NotFoundError = require('../errors/not-found-err');
 
 // очистка Cookie при выходе из системы
 module.exports.logout = (req, res) => {
@@ -34,7 +34,7 @@ module.exports.login = (req, res, next) => {
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            return Promise.reject(new NotAuthorizedError('Неправильные почта или пароль'));
+            return Promise.reject(new NotAuthError('Неправильные почта или пароль'));
           }
           const token = jwt.sign(
             { _id: user._id },
@@ -78,28 +78,13 @@ module.exports.createUser = (req, res, next) => {
       }));
 };
 
-module.exports.getUsers = (req, res, next) => {
-  User.find({})
-    .then((users) => res.send(users))
-    .catch((err) => next(err));
-};
-
-module.exports.getUserById = (req, res, next) => {
-  User.findById(req.params.userId)
-    .orFail(new NotFoundError(`Пользователь по указанному id:${req.params.userId} не найден`))
-    .then((user) => res.send({ data: user }))
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new InvalidDataError('Некорректный идентификатор пользователя'));
-      } else {
-        next(err);
-      }
-    });
-};
-
+// получение данных о текущем пользователе
 module.exports.getCurrentUser = (req, res, next) => {
   req.params.userId = req.user._id;
-  module.exports.getUserById(req, res, next);
+  User.findById(req.params.userId)
+    .orFail(new NotFoundError(`Пользователь не найден`))
+    .then((user) => res.send({ data: user }))
+    .catch(next);
 };
 
 // обновление имени и почты пользователя
@@ -111,7 +96,7 @@ module.exports.updateProfile = (req, res, next) => {
     new: true,
     runValidators: true,
   })
-    .orFail(new NotFoundError(`Пользователь по указанному id:${req.params.userId} не найден`))
+    .orFail(new NotFoundError(`Пользователь не найден`))
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
