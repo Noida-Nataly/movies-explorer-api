@@ -9,14 +9,14 @@ const NotFoundError = require('../errors/not-found-err');
 const {
   validationLogin,
   validationCreateUser,
-  } = require('../middlewares/validation');
+} = require('../middlewares/validation');
 // router.get('/crash-test', () => {
 //   setTimeout(() => {
 //     throw new Error('Сервер сейчас упадёт');
 //   }, 0);
 // });
 
-router.post( '/signin', validationLogin, userController.login);
+router.post('/signin', validationLogin, userController.login);
 router.post('/signup', validationCreateUser, userController.createUser);
 router.get('/signout', userController.logout);
 

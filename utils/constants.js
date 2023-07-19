@@ -10,7 +10,7 @@ const limitation = {
   windowMs: 10 * 60 * 1000,
   standardHeaders: true,
   legacyHeaders: false,
-  message: "Слишком много запросов с вашего IP-адреса"
+  message: 'Слишком много запросов с вашего IP-адреса',
 };
 
 const regex = /^(https?:\/\/)+[^\s]*/;
@@ -22,4 +22,4 @@ module.exports = {
   NODE_ENV,
   limitation,
   regex,
-}
+};

@@ -5,7 +5,8 @@ const NotFoundError = require('../errors/not-found-err');
 const AccessDeniedError = require('../errors/access-denied-err');
 
 module.exports.createMovie = (req, res, next) => {
-  const { country,
+  const {
+    country,
     director,
     duration,
     year,
@@ -18,7 +19,8 @@ module.exports.createMovie = (req, res, next) => {
     nameEN,
   } = req.body;
   const owner = req.user._id;
-  Movie.create({country,
+  Movie.create({
+    country,
     director,
     duration,
     year,
@@ -29,7 +31,8 @@ module.exports.createMovie = (req, res, next) => {
     owner,
     movieId,
     nameRU,
-    nameEN,})
+    nameEN,
+  })
     .then((movie) => res.send({ data: movie }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -44,11 +47,11 @@ module.exports.getCurrentMovies = (req, res, next) => {
   Movie.find({ owner: req.user._id })
     .then((movies) => res.send(movies))
     .catch(next);
-}
+};
 
 module.exports.deleteMovie = (req, res, next) => {
   Movie.findById(req.params.id)
-    .orFail(new NotFoundError(`Фильм не найден`))
+    .orFail(new NotFoundError('Фильм не найден'))
     .then((movie) => {
       if (movie.owner.toString() !== req.user._id) {
         return Promise.reject(new AccessDeniedError('Извините, но Вы не можете удалить чужой фильм'));

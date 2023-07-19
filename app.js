@@ -3,13 +3,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
-const rateLimit = require("express-rate-limit");
+const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const errorsMiddleware = require('./middlewares/errors');
 const corsMiddleware = require('./middlewares/cors');
-
 
 const { PORT, CONNECT_STRING, limitation } = require('./utils/constants');
 const router = require('./routes/index');

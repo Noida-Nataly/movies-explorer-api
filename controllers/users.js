@@ -82,7 +82,7 @@ module.exports.createUser = (req, res, next) => {
 module.exports.getCurrentUser = (req, res, next) => {
   req.params.userId = req.user._id;
   User.findById(req.params.userId)
-    .orFail(new NotFoundError(`Пользователь не найден`))
+    .orFail(new NotFoundError('Пользователь не найден'))
     .then((user) => res.send({ data: user }))
     .catch(next);
 };
@@ -96,7 +96,7 @@ module.exports.updateProfile = (req, res, next) => {
     new: true,
     runValidators: true,
   })
-    .orFail(new NotFoundError(`Пользователь не найден`))
+    .orFail(new NotFoundError('Пользователь не найден'))
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -106,4 +106,3 @@ module.exports.updateProfile = (req, res, next) => {
       }
     });
 };
-
