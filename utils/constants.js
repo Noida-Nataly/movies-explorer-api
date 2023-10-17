@@ -1,5 +1,5 @@
 const {
-  PORT = 3000,
+  PORT = 4001,
   CONNECT_STRING = 'mongodb://127.0.0.1:27017/bitfilmsdb',
   JWT_SECRET = '4PgzIvqPt4i08qhHTg8MZCWruulpojs6',
   NODE_ENV = 'dev',
